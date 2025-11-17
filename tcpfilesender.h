@@ -2,8 +2,8 @@
 #define TCPFILESENDER_H
 
 #include <QDialog>
-#include<QtNetwork>
-#include<QtWidgets>
+#include <QtNetwork>
+#include <QtWidgets>
 
 class TcpFileSender : public QDialog
 {
@@ -24,7 +24,7 @@ private:
     QPushButton     *openButton;
     QPushButton     *quitButton;
     QDialogButtonBox    *buttonBox;
-    QTcpSocket      *tcpClient;
+    QTcpSocket      tcpClient;
 
     qint64          totalBytes;
     qint64          bytesWritten;

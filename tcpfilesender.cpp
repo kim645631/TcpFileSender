@@ -16,7 +16,7 @@ TcpFileSender::TcpFileSender(QWidget *parent)
     buttonBox = new QDialogButtonBox;
     buttonBox->addButton(startButton,QDialogButtonBox::ActionRole);
     buttonBox->addButton(openButton,QDialogButtonBox::ActionRole);
-    buttonBox->addButton(quitButton,QDialogButtonBox::ActionRole);
+    buttonBox->addButton(quitButton,QDialogButtonBox::RejectRole);
 }
 
 TcpFileSender::~TcpFileSender() {
