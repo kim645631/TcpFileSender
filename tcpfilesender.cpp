@@ -43,7 +43,24 @@ void TcpFileSender::start(){
     tcpClient.connectToHost(QHostAddress::LocalHost,16689);
 }
 void TcpFileSender::startTransfer(){
+    localFlie = new QFile(fileNane);
+    if(!localFlie->open(QFile::ReadOnly)){
+        QMessageBox::warning(this,tr("應用程式"),
+                             tr("無法讀取 %1:\n%2.").arg(fileNane)
+                                 .arg(localFlie->errorString()));
+        return;
+    }
+    totalBytes = localFlie->size();
+    QDataStream sendOut(&outBlock,QIODevice::WriteOnly);
+    sendOut.setVersion(QDataStream::Qt_4_6);
+    QString currentFile = fileNane.right(fileNane.size() -
+                                         fileNane.lastIndexOf("/")-1);
+    sendOut <<qint64(0)<<qint64(0)<<currentFile;
+    totalBytes += outBlock.size();
 
+    sendOut.device()->seek(0);
+    sendOut<<totalBytes<<qint64((outBlock.size()-sizeof(qint64)*2));
+    bytesToWrite = totalBytes -
 }
 void TcpFileSender::updateClientProgress(qint64 numBytes){
 
