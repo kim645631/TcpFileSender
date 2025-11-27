@@ -10,7 +10,7 @@ class TcpFileSender : public QDialog
     Q_OBJECT
 
 public:
-    TcpFileSender(QWidget *parent = nullptr);
+    TcpFileSender(QWidget *parent = 0);
     ~TcpFileSender();
 public slots:
     void start();
