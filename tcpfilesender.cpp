@@ -60,10 +60,23 @@ void TcpFileSender::startTransfer(){
 
     sendOut.device()->seek(0);
     sendOut<<totalBytes<<qint64((outBlock.size()-sizeof(qint64)*2));
-    bytesToWrite = totalBytes -
+    bytesToWrite = totalBytes - tcpClient.write(outBlock);
+    clientStatusLable->setText(tr("已連線"));
+    qDebug()<<currentFile<<totalBytes;
+    outBlock.resize(0);
 }
 void TcpFileSender::updateClientProgress(qint64 numBytes){
-
+    bytesWritten += (int) numBytes;
+    if(bytesToWrite>0){
+        outBlock = localFlie->read(qMin(bytesToWrite,loadSize));
+        bytesToWrite -= (int) tcpClient.write(outBlock);
+        outBlock.resize(0);
+    }else{
+        localFlie->close();
+    }
+    clientProgressBar->setMaximum(totalBytes);
+    clientProgressBar->setValue(bytesWritten);
+    clientStatusLable->setText(tr("已傳送 %1 Bytes").arg(bytesWritten));
 }
 void TcpFileSender::openFile(){
     fileNane = QFileDialog::getOpenFileName(this);
